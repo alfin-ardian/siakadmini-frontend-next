@@ -1,12 +1,14 @@
 import { Form, Col,Button, Alert } from 'react-bootstrap';
 import Axios from 'axios';
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Router from 'next/router'
 
 export default function addMengajar() {
 
     const [form,setForm] = useState();
     const [message, setMessage] = useState();
+    const [kelases, setkelases] = useState();
+    const [pegawais, setPegawais] = useState();
 
     function save(e){
         e.preventDefault()
@@ -20,7 +22,24 @@ export default function addMengajar() {
         })
     }
 
-    console.log(form);
+    function getkelas(){
+        Axios.get('http://localhost:8000/kelas')
+        .then(function(response){
+            setkelases(response.data)
+        })
+    }
+
+    function getPegawai(){
+        Axios.get('http://localhost:8000/pegawai')
+        .then(function(response){
+            setPegawais(response.data)
+        })
+    }
+
+    useEffect(() => {
+        getkelas()
+        getPegawai()
+    },[])
 
     return(
         <div className='container-fluid'>
@@ -44,12 +63,38 @@ export default function addMengajar() {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label column sm="2">
+                        idkelas
+                        </Form.Label>
+                        <Col sm="10">
+                        <Form.Control as="select" placeholder="idkelas" value={form?.idkelas} onChange={e=>setForm({...form, idkelas:e.target.value})}>
+                        <option>idkelas</option>
+                        {kelases?.data.map((data, index) => (
+                        <option>{data.idkelas}</option>
+                        ))}
+                        </Form.Control>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label column sm="2">
                         nip
                         </Form.Label>
                         <Col sm="10">
                         <Form.Control type="text" placeholder="nip" value={form?.nip} onChange={e=>setForm({...form, nip:e.target.value})} />
                         </Col>
                     </Form.Group> 
+                    <Form.Group>
+                        <Form.Label column sm="2">
+                        nip
+                        </Form.Label>
+                        <Col sm="10">
+                        <Form.Control as="select" placeholder="nip" value={form?.nip} onChange={e=>setForm({...form, nip:e.target.value})}>
+                        <option>nip</option>
+                        {pegawais?.data.map((data, index) => (
+                        <option>{data.nip}</option>
+                        ))}
+                        </Form.Control>
+                        </Col>
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label column sm="2">
                         waktuajar1

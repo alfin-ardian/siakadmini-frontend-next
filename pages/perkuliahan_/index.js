@@ -82,13 +82,12 @@ export default function pegawai() {
                     <td>{data.keterangan}</td>
                     <td>
                     <Button variant="outline-danger" onClick={()=>hapus(data.idruang)}>hapus</Button>{' '}
-                    <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>{' '}
+                    <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>
                     </td>
                     </tr>
                    ))}
                 </tbody>
                 </Table>
-                <Button variant="outline-success" className='mt-2' onClick={()=>router.push("perkuliahan_/addPerkuliahan")}>tambah data</Button>{' '}
                 </div>
             </div>
             )}

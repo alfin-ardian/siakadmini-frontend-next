@@ -68,7 +68,7 @@ export default function edit({data, onBack}){
                         semmhs
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" disabled placeholder="semmhs" value={editForm?.semmhs} onChange={e=>setEditForm({...editForm, semmhs:e.target.value})}/>
+                        <Form.Control type="text" placeholder="semmhs" value={editForm?.semmhs} onChange={e=>setEditForm({...editForm, semmhs:e.target.value})}/>
                         </Col>
                     </Form.Group>
                     <Form.Group>
@@ -76,7 +76,7 @@ export default function edit({data, onBack}){
                         skstotal
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" disabled placeholder="skstotal" value={editForm?.skstotal} onChange={e=>setEditForm({...editForm, skstotal:e.target.value})}/>
+                        <Form.Control type="text" placeholder="skstotal" value={editForm?.skstotal} onChange={e=>setEditForm({...editForm, skstotal:e.target.value})}/>
                         </Col>
                     </Form.Group>
                     <Form.Group>
@@ -84,7 +84,7 @@ export default function edit({data, onBack}){
                         semmk
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" disabled placeholder="semmk" value={editForm?.semmk} onChange={e=>setEditForm({...editForm, semmk:e.target.value})}/>
+                        <Form.Control type="text" placeholder="semmk" value={editForm?.semmk} onChange={e=>setEditForm({...editForm, semmk:e.target.value})}/>
                         </Col>
                     </Form.Group>
                     <Button variant="outline-info" type="submit">

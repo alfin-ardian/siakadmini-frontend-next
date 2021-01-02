@@ -73,6 +73,9 @@ export default function edit({data, onBack}){
                     </Form.Group>
                     <Button variant="outline-info" type="submit">
                         Submit
+                    </Button>{' '}
+                    <Button variant="outline-success" type="submit" href="matakuliah">
+                        Kembali
                     </Button>
                     </Form>
                 </div>

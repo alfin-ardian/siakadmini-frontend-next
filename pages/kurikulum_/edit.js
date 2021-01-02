@@ -1,22 +1,54 @@
 import {Form, Button, Col} from 'react-bootstrap';
 import Axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 export default function edit({data, onBack}){
     const router = useRouter()
     const [editForm,setEditForm] = useState(data);
+    const [units, setUnits] = useState();
+    const [kurikulums, setKurikulums] = useState();
+    const [mks, setMks] = useState();
 
     function save(e){
         e.preventDefault()
         Axios({
-            url : `http://localhost:8000/kelas/${data.id}`,
+            url : `http://localhost:8000/kurikulum/${data.id}`,
             method : 'PUT',
             data : editForm
         }).then(response =>{
             onBack(false)
         })
     }
+
+    function getUnit(){
+        Axios.get('http://localhost:8000/unit')
+        .then(function(response){
+            setUnits(response.data)
+        })
+    }
+
+    function getKurikulum(){
+        Axios.get('http://localhost:8000/kurikulum')
+        .then(function(response){
+            setKurikulums(response.data)
+        })
+    }
+
+    
+    function getMatakuliah(){
+        Axios.get('http://localhost:8000/matakuliah')
+        .then(function(response){
+            setMks(response.data)
+        })
+    }
+
+    
+    useEffect(() => {
+        getUnit()
+        getKurikulum()
+        getMatakuliah()
+      },[])
 
     return(
         <div className='container-fluid'>
@@ -25,42 +57,65 @@ export default function edit({data, onBack}){
                 <Form onSubmit={save}>
                     <Form.Group>
                         <Form.Label column sm="2">
-                        Id kelas
+                       idunit
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="id kelas" value={editForm?.idkelas} />
+                        <Form.Control as="select" placeholder="idunit" value={editForm?.idunit} >
+                        <option>nim</option>
+                        {units?.data.map((data, index) => (
+                        <option>{data.idunit}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label column sm="2">
-                        nama kelas
+                        idkurikulum
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="nama kelas" value={editForm?.namakelas} onChange={e=>setEditForm({...editForm, namakelas:e.target.value})} />
+                        <Form.Control as="select" placeholder="idkurikulum" value={editForm?.idkurikulum} onChange={e=>setEditForm({...editForm, idkurikulum:e.target.value})} >
+                        <option>nim</option>
+                        {kurikulums?.data.map((data, index) => (
+                        <option>{data.idkurikulum}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group> 
                     <Form.Group>
                         <Form.Label column sm="2">
-                        alamat
+                        idmk
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="alamat" value={editForm?.alamat} onchange={e=>setEditForm({...editForm, alamat:e.target.value})} />
+                        <Form.Control as="select" placeholder="idmk" value={editForm?.idmk} onchange={e=>setEditForm({...editForm, idmk:e.target.value})} >
+                        <option>nim</option>
+                        {mks?.data.map((data, index) => (
+                        <option>{data.idmk}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group> 
                     <Form.Group>
                         <Form.Label column sm="2">
-                        hp
+                        semmk
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="hp"  value={editForm?.hp} onChange={e=>setEditForm({...editForm, hp:e.target.value})}/>
+                        <Form.Control type="text" placeholder="semmk"  value={editForm?.semmk} onChange={e=>setEditForm({...editForm, semmk:e.target.value})}/>
                         </Col>
                     </Form.Group> 
                     <Form.Group>
                         <Form.Label column sm="2">
-                        email
+                        sksmk
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="email" value={editForm?.email} onChange={e=>setEditForm({...editForm, email:e.target.value})}/>
+                        <Form.Control type="text" placeholder="sksmk" value={editForm?.sksmk} onChange={e=>setEditForm({...editForm, sksmk:e.target.value})}/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label column sm="2">
+                        namamk
+                        </Form.Label>
+                        <Col sm="10">
+                        <Form.Control type="text" placeholder="namamk" value={editForm?.namamk} onChange={e=>setEditForm({...editForm, namamk:e.target.value})}/>
                         </Col>
                     </Form.Group>
                     <Button variant="outline-info" type="submit">

@@ -76,13 +76,12 @@ export default function pegawai() {
                     <td>{data.idperiode}</td>
                     <td>
                     <Button variant="outline-danger" onClick={()=>hapus(data.idmk)}>hapus</Button>{' '}
-                    <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>{' '}
+                    <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>
                     </td>
                     </tr>
                    ))}
                 </tbody>
                 </Table>
-                <Button variant="outline-success" className='mt-2' href="transkrip/addTranskrip">tambah data</Button>{' '}
                 </div>
             </div>
             )}

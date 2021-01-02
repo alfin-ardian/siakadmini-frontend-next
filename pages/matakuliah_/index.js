@@ -44,7 +44,7 @@ export default function unit() {
         <div className='container-fluid'>
             { showEdit ? <Edit data={detail} onBack={handleBack} /> : (
             <div className='row justify-content-md-center'>
-                <div className='col-md-9 mt-2'>
+                <div className='col-md-10 mt-2'>
                 <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -70,13 +70,12 @@ export default function unit() {
                     <td>{data.sksmk}</td>
                     <td>
                     <Button variant="outline-danger" onClick={()=>hapus(data.idmk)}>hapus</Button>{' '}
-                    <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>{' '}
+                    <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>
                     </td>
                     </tr>
                    ))}
                 </tbody>
                 </Table>
-                <Button variant="outline-success" className='mt-2' href="matakuliah/addMatakuliah">tambah data</Button>{' '}
                 </div>
             </div>
             )}

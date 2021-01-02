@@ -1,12 +1,15 @@
 import { Form, Col,Button } from 'react-bootstrap';
 import Axios from 'axios';
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Router from 'next/router'
 
-export default function addPwl() {
+export default function add() {
 
     const [form,setForm] = useState();
     const [message, setMessage] = useState();
+    const [mahasiswas, setMahasiswa] = useState();
+    const [periodes, setPeriodes] = useState();
+    const [pegawais, setPegawais] = useState();
 
     function save(e){
         e.preventDefault()
@@ -21,7 +24,32 @@ export default function addPwl() {
         
     }
 
-    console.log(form);
+    function getMahasiswa(){
+        Axios.get('http://localhost:8000/mahasiswa')
+        .then(function(response){
+            setMahasiswa(response.data)
+        })
+    }
+
+    function getPeriode(){
+        Axios.get('http://localhost:8000/periode')
+        .then(function(response){
+            setPeriodes(response.data)
+        })
+    }
+
+    function getPegawai(){
+        Axios.get('http://localhost:8000/pegawai')
+        .then(function(response){
+            setPegawais(response.data)
+        })
+    }
+
+    useEffect(() => {
+        getMahasiswa()
+        getPeriode()
+        getPegawai()
+    },[])
 
     return(
         <div className='container-fluid'>
@@ -37,10 +65,15 @@ export default function addPwl() {
                     <Form onSubmit={save}>
                     <Form.Group>
                         <Form.Label column sm="2">
-                        id periode
+                        idperiode
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="idperiode" value={form?.idperiode} onChange={e=>setForm({...form, idperiode:e.target.value})} />
+                        <Form.Control as="select" placeholder="idperiode" value={form?.idperiode} onChange={e=>setForm({...form, idperiode:e.target.value})}>
+                        <option>idperiode</option>
+                        {periodes?.data.map((data, index) => (
+                        <option>{data.idperiode}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group>
@@ -48,17 +81,27 @@ export default function addPwl() {
                         nim
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="nim" value={form?.nim} onChange={e=>setForm({...form, nim:e.target.value})} />
+                        <Form.Control as="select" placeholder="nim" value={form?.nim} onChange={e=>setForm({...form, nim:e.target.value})}>
+                        <option>nim</option>
+                        {mahasiswas?.data.map((data, index) => (
+                        <option>{data.nim}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
-                    </Form.Group> 
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label column sm="2">
                         nip
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="nip" value={form?.nip} onChange={e=>setForm({...form, nip:e.target.value})} />
+                        <Form.Control as="select" placeholder="nip" value={form?.nip} onChange={e=>setForm({...form, nip:e.target.value})}>
+                        <option>nip</option>
+                        {pegawais?.data.map((data, index) => (
+                        <option>{data.nip}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
-                    </Form.Group> 
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label column sm="2">
                         ips

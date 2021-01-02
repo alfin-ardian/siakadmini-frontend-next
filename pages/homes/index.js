@@ -1,29 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {Table,Button} from 'react-bootstrap';
+import {Table,Button, Spinner} from 'react-bootstrap';
 import Axios from 'axios';
-import Edit from './edit';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
-
-
-export default function pegawai() {
-    const router = useRouter()
+export default function index(){
     const [datas, setDatas] = useState()
-    const [ showEdit, setShowEdit ] = useState()
-    const [ detail, setDetail ] = useState()
-    
+    const [loading, setLoading ] = useState()
+    const router = useRouter()
+
     function getData(){
-        Axios.get('http://localhost:8000/mengajar')
+        setLoading(true)
+        Axios.get('http://localhost:8000' + (router.asPath))
         .then(function(response){
+            setTimeout(() =>{
+                setLoading(false)
+            }, 1000)
             setDatas(response.data)
-        })
-    }
-    
-    function hapus(idkelas){
-        Axios.delete(`http://localhost:8000/mengajar/${idkelas}`)
-        .then(response =>{
-            getData()
-            console.log(response.data)
         })
     }
 
@@ -31,29 +23,19 @@ export default function pegawai() {
         getData()
       },[])
 
-      const handleEdit = data => {
-          setDetail(data)
-          setShowEdit(true)
-      }
-
-      const handleBack = () => {
-        getData()
-        setShowEdit(false)
-      }
     return(
         <div className='container-fluid'>
-            { showEdit ? <Edit data={detail} onBack={handleBack} /> : (
             <div className='row justify-content-md-center'>
                 <div className='col-md-10 mt-2'>
                 <Table striped bordered hover>
                 <thead>
                     <tr>
                     <th>No</th>
-                    <th>id kelas</th>
-                    <th>nip</th>
-                    <th>waktu ajar 1</th>
-                    <th>waktu ajar 2</th>
-                    <th>sksmk</th>
+                    <th>Id kelas</th>
+                    <th>Id unit</th>
+                    <th>Id kurikulum</th>
+                    <th>Id mk</th>
+                    <th>Nama kelas</th>
                     <th>Action</th>
                     </tr>
                 </thead>
@@ -62,10 +44,10 @@ export default function pegawai() {
                     <tr>
                     <td>{index+1}</td>
                     <td>{data.idkelas}</td>
-                    <td>{data.nip}</td>
-                    <td>{data.waktuajar1}</td>
-                    <td>{data.waktuajar2}</td>
-                    <td>{data.sksmk}</td>
+                    <td>{data.idunit}</td>
+                    <td>{data.idkurikulum}</td>
+                    <td>{data.idmk}</td>
+                    <td>{data.namakelas}</td>
                     <td>
                     <Button variant="outline-danger" onClick={()=>hapus(data.idkelas)}>hapus</Button>{' '}
                     <Button variant="outline-info" onClick={()=>handleEdit(data)}>edit</Button>
@@ -76,7 +58,6 @@ export default function pegawai() {
                 </Table>
                 </div>
             </div>
-            )}
         </div>
     )
 }

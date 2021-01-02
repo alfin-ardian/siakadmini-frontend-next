@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {Table,Button, Spinner} from 'react-bootstrap';
+import {Table,Button, Spinner, Pagination} from 'react-bootstrap';
 import Axios from 'axios';
 import Edit from './edit';
+import { useRouter } from 'next/router'
 
 
 export default function mahasiswa() {
@@ -10,13 +11,24 @@ export default function mahasiswa() {
     const [ showEdit, setShowEdit ] = useState()
     const [ detail, setDetail ] = useState()
     const [ loading, setLoading ] = useState()
+    const router = useRouter()
+    const [ totalData, setTotalData ] = useState()
 
     function getData(){
         setLoading(true)
-        Axios.get('http://localhost:8000/mahasiswa')
+        Axios.get('http://localhost:8000/'+ (router.asPath))
         .then(function(response){
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false)
+            }, 1000);
             setDatas(response.data)
+
+            let total = []
+            for(var i=0;i<response.data.last_page;i++){
+                total.push(i)
+            }
+
+            setTotalData(total)
         })
     }
     
@@ -24,7 +36,7 @@ export default function mahasiswa() {
         Axios.delete(`http://localhost:8000/mahasiswa/${id}`)
         .then(response =>{
             getData()
-            console.log(response.data)
+
         })
     }
 
@@ -42,14 +54,15 @@ export default function mahasiswa() {
         setShowEdit(false)
       }
 
-      console.log(datas)
-
     return(
         <>
         { loading ? (
-        <Spinner animation="border" role="status">
-        <span className="sr-only">Loading...</span>
-        </Spinner>
+            <div className="loading">
+                    <Spinner animation="border" role="status" variant="info">
+                    <span className="sr-only">Loading...</span>
+                    </Spinner>
+                    <p>Loading sayang ...</p>
+            </div>
         ) : (
         <div className='container-fluid'>
             { showEdit ? <Edit data={detail} onBack={handleBack} /> : (
@@ -94,6 +107,22 @@ export default function mahasiswa() {
                    ))}
                 </tbody>
                 </Table>
+                {/* <div className="loading">
+                    <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div> */}
+
+                {totalData?.map((total, index)=>(
+                <Pagination.Item key={index} active={index === datas?.current_page} 
+                onClick={()=>console.log('hal:',index+1)}>
+                    {index+1}
+                  </Pagination.Item>
+                ))}
+                <Pagination>1</Pagination>
+                <Pagination.Item>{1}</Pagination.Item>
+                <Pagination.Item>{2}</Pagination.Item>
+                <Pagination.Item>{3}</Pagination.Item>
                 </div>
             </div>
             )}

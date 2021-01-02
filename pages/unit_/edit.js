@@ -44,7 +44,7 @@ export default function edit({data, onBack}){
                         levelunit
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="levelunit" value={editForm?.levelunit} onchange={e=>setEditForm({...editForm, levelunit:e.target.value})} />
+                        <Form.Control type="text" placeholder="levelunit" value={editForm?.levelunit} onChange={e=>setEditForm({...editForm, levelunit:e.target.value})} />
                         </Col>
                     </Form.Group> 
                     <Form.Group>

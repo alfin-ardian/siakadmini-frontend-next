@@ -1,12 +1,15 @@
 import { Form, Col,Button, Alert } from 'react-bootstrap';
 import Axios from 'axios';
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Router from 'next/router'
 
 export default function addUnit() {
 
     const [form,setForm] = useState();
     const [message, setMessage] = useState();
+    const [kurikulums, setKurikulums] = useState();
+    const [units, setUnits] = useState();
+    const [pegawais, setPegawais] = useState();
 
     function save(e){
         e.preventDefault()
@@ -20,7 +23,33 @@ export default function addUnit() {
         })
     }
 
-    console.log(form);
+    function getKurikulum(){
+        Axios.get('http://localhost:8000/kurikulum')
+        .then(function(response){
+            setKurikulums(response.data)
+        })
+    }
+
+    function getUnit(){
+        Axios.get('http://localhost:8000/unit')
+        .then(function(response){
+            setUnits(response.data)
+        })
+    }
+
+    
+    function getPegawai(){
+        Axios.get('http://localhost:8000/pegawai')
+        .then(function(response){
+            setPegawais(response.data)
+        })
+    }
+
+    useEffect(() => {
+        getKurikulum()
+        getUnit()
+        getPegawai()
+    },[])
 
     return(
         <div className='container-fluid'>
@@ -39,7 +68,12 @@ export default function addUnit() {
                         idkurikulum
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="idkurikulum" value={form?.idkurikulum} onChange={e=>setForm({...form, idkurikulum:e.target.value})} />
+                        <Form.Control as="select" placeholder="idkurikulum" value={form?.idkurikulum} onChange={e=>setForm({...form, idkurikulum:e.target.value})}>
+                        <option>idkurikulum</option>
+                        {kurikulums?.data.map((data, index) => (
+                        <option>{data.idkurikulum}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group>
@@ -55,7 +89,12 @@ export default function addUnit() {
                         nip
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="nip"  value={form?.nip} onChange={e=>setForm({...form, nip:e.target.value})}/>
+                        <Form.Control as="select" placeholder="nip"  value={form?.nip} onChange={e=>setForm({...form, nip:e.target.value})}>
+                        <option>idunit</option>
+                        {pegawais?.data.map((data, index) => (
+                        <option>{data.nip}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group> 
                     <Form.Group>
@@ -63,7 +102,12 @@ export default function addUnit() {
                         idunit
                         </Form.Label>
                         <Col sm="10">
-                        <Form.Control type="text" placeholder="idunit" value={form?.idunit} onChange={e=>setForm({...form, idunit:e.target.value})}/>
+                        <Form.Control as="select" placeholder="idunit" value={form?.idunit} onChange={e=>setForm({...form, idunit:e.target.value})}>
+                        <option>idunit</option>
+                        {units?.data.map((data, index) => (
+                        <option>{data.idunit}</option>
+                        ))}
+                        </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group>

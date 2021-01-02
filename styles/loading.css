@@ -1,0 +1,12 @@
+.loading{
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateY(25%);
+    height: 100%;
+}
+
+.loading p {
+    margin-top: 10px;
+    margin-left: -32%;
+}

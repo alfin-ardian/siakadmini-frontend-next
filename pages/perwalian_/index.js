@@ -1,20 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import {Table,Button} from 'react-bootstrap';
+import {Table,Button, Spinner} from 'react-bootstrap';
 import Axios from 'axios';
 import Edit from './edit';
-
-
-
 
 export default function kelas() {
 
     const [datas, setDatas] = useState()
     const [ showEdit, setShowEdit ] = useState()
     const [ detail, setDetail ] = useState()
+    const [loading, setLoading] = useState()
 
     function getData(){
+        setLoading(true)
         Axios.get('http://localhost:8000/perwalian')
         .then(function(response){
+            setTimeout(() => {
+                setLoading(false)
+            },1000)
             setDatas(response.data)
         })
     }
@@ -41,10 +43,20 @@ export default function kelas() {
         setShowEdit(false)
       }
     return(
+        <>
+         { loading ? (
+             <div className="loading">
+                <Spinner animation="border" role="status" variant="info">
+                <span className="sr-only">Loading...</span>
+                </Spinner>
+                <p>loading sayang ...</p>
+            </div>
+        ) : (
+        
         <div className='container-fluid'>
             { showEdit ? <Edit data={detail} onBack={handleBack} /> : (
             <div className='row justify-content-md-center'>
-                <div className='col-md-9 mt-2'>
+                <div className='col-md-10 mt-2'>
                 <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -54,8 +66,8 @@ export default function kelas() {
                     <th>nip</th>
                     <th>ips</th>
                     <th>Ipk</th>
-                    <th>semester mahasiswa</th>
-                    <th>sks semester</th>
+                    <th>semsmhs</th>
+                    <th>skssemester</th>
                     <th>sks total</th>
                     <th>semester mk</th>
                     <th>Action</th>
@@ -82,10 +94,11 @@ export default function kelas() {
                    ))}
                 </tbody>
                 </Table>
-                <Button variant="outline-success" className='mt-2' href="perwalian/addPwl">tambah data</Button>
                 </div>
             </div>
             )}
         </div>
+        )}
+        </>
     )
 }
